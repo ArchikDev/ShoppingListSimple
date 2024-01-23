@@ -1,4 +1,4 @@
-package ru.ar4uk.shoppinglistsimple.data
+package ru.ar4uk.shoppinglistsimple.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
