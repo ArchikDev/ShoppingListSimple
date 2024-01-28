@@ -9,18 +9,28 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.compose.rememberNavController
 import ru.ar4uk.shoppinglistsimple.R
+import ru.ar4uk.shoppinglistsimple.navigation.NavigationGraph
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
+    val navController = rememberNavController()
+
     Scaffold(
         bottomBar = {
-            BottomNav()
+            BottomNav(navController)
         },
         floatingActionButton = {
-            FloatingActionButton(shape = CircleShape, backgroundColor = BlueLight, onClick = { /*TODO*/ }) {
+            FloatingActionButton(
+                shape = CircleShape,
+                backgroundColor = BlueLight,
+                onClick = {
+
+                }
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.fl_add_icon),
                     contentDescription = null,
@@ -31,6 +41,6 @@ fun MainScreen() {
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true
     ) {
-
+        NavigationGraph(navController)
     }
 }
