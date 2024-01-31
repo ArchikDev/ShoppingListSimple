@@ -9,11 +9,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ShoppingListScreen() {
-    Text(
-        text = "ShoppingListScreen",
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight()
-            .wrapContentWidth()
-    )
+//    UIShoppingListItem()
 }

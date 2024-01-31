@@ -29,7 +29,6 @@ import ru.ar4uk.shoppinglistsimple.ui.theme.GreenLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
 import ru.ar4uk.shoppinglistsimple.ui.theme.Red
 
-@Preview(showBackground = true)
 @Composable
 fun UIShoppingListItem() {
     ConstraintLayout(
