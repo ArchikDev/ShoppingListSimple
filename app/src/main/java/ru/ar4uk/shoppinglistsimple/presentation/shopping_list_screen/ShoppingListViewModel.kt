@@ -9,12 +9,15 @@ import kotlinx.coroutines.launch
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingListItemRepo
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class ShoppingListViewModel @Inject constructor(
     private val repository: ShoppingListItemRepo
 ): ViewModel(), DialogController {
+
+    private val list = repository.allItems()
 
     private var listItem: ShoppingListItem? = null
 
@@ -26,8 +29,6 @@ class ShoppingListViewModel @Inject constructor(
         private set
     override var showEditableText = mutableStateOf(false)
         private set
-
-
 
     fun onEvent(event: ShoppingListEvent) {
         when(event) {
@@ -48,12 +49,46 @@ class ShoppingListViewModel @Inject constructor(
 
             }
             is ShoppingListEvent.OnShowEditDialog -> {
-//                listItem = event.item
+                listItem = event.item
+
+                openDialog.value = true
+                editableText.value = listItem?.name ?: ""
+                dialogTitle.value = "List name"
+                showEditableText.value = true
             }
             is ShoppingListEvent.OnShowDeleteDialog -> {
+                listItem = event.item
+
+                openDialog.value = true
+                dialogTitle.value = "Delete this item?"
+                showEditableText.value = false
 
             }
         }
+    }
+
+    fun onDialogEvent(event: DialogEvent) {
+
+        when(event) {
+            DialogEvent.OnCancel -> {
+                openDialog.value = false
+            }
+            DialogEvent.OnConfirm -> {
+                if (showEditableText.value) {
+                    onEvent(ShoppingListEvent.OnItemSave)
+                } else {
+                    viewModelScope.launch {
+                        listItem?.let { repository.deleteItem(it) }
+                    }
+                }
+
+                openDialog.value = false
+            }
+            is DialogEvent.OnTextChange -> {
+                editableText.value = event.text
+            }
+        }
+
     }
 
 }
