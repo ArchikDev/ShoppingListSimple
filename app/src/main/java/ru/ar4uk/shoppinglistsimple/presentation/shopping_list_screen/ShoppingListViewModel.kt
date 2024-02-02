@@ -5,9 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingListItemRepo
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
 import javax.inject.Inject
@@ -18,6 +21,9 @@ class ShoppingListViewModel @Inject constructor(
 ): ViewModel(), DialogController {
 
     private val list = repository.allItems()
+
+    private val _uiEvent = Channel<UiEvent>() // передатчик
+    val uiEvent = _uiEvent.receiveAsFlow() // приёмник
 
     private var listItem: ShoppingListItem? = null
 
@@ -46,7 +52,8 @@ class ShoppingListViewModel @Inject constructor(
                 }
             }
             is ShoppingListEvent.OnItemClick -> {
-
+//                event.route
+                sendUiEvent(UiEvent.Navigate(event.route))
             }
             is ShoppingListEvent.OnShowEditDialog -> {
                 listItem = event.item
@@ -89,6 +96,12 @@ class ShoppingListViewModel @Inject constructor(
             }
         }
 
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
     }
 
 }
