@@ -6,8 +6,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
 
 @Composable
-fun ShoppingListScreen() {
+fun ShoppingListScreen(
+    viewModel: ShoppingListViewModel = hiltViewModel()
+) {
 //    UIShoppingListItem()
+    MainDialog(dialogController = viewModel)
 }

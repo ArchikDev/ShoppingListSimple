@@ -74,7 +74,7 @@ class ShoppingListViewModel @Inject constructor(
         }
     }
 
-    fun onDialogEvent(event: DialogEvent) {
+    override fun onDialogEvent(event: DialogEvent) {
 
         when(event) {
             DialogEvent.OnCancel -> {

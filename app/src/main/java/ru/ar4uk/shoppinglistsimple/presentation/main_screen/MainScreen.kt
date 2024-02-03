@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
 import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.navigation.NavigationGraph
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -42,5 +43,6 @@ fun MainScreen() {
         isFloatingActionButtonDocked = true
     ) {
         NavigationGraph(navController)
+//        MainDialog(dialogController = )
     }
 }
