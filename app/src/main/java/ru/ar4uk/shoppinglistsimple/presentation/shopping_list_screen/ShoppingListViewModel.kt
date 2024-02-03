@@ -1,6 +1,5 @@
 package ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -9,15 +9,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.navigation.NavigationGraph
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
+import ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen.ShoppingListViewModel
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: MainScreenViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -29,7 +33,7 @@ fun MainScreen() {
                 shape = CircleShape,
                 backgroundColor = BlueLight,
                 onClick = {
-
+                    viewModel.onEvent(MainScreenEvent.OnShowDialog)
                 }
             ) {
                 Icon(
@@ -43,6 +47,6 @@ fun MainScreen() {
         isFloatingActionButtonDocked = true
     ) {
         NavigationGraph(navController)
-//        MainDialog(dialogController = )
+        MainDialog(dialogController = viewModel)
     }
 }

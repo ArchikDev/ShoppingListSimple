@@ -14,5 +14,5 @@ fun ShoppingListScreen(
     viewModel: ShoppingListViewModel = hiltViewModel()
 ) {
 //    UIShoppingListItem()
-    MainDialog(dialogController = viewModel)
+//    MainDialog(dialogController = viewModel)
 }
