@@ -57,7 +57,7 @@ fun UIShoppingListItem(
                     end.linkTo(parent.end)
                 }
                 .clickable {
-                    onEvent(ShoppingListEvent.OnItemClick(Routes.ADD_ITEM))
+                    onEvent(ShoppingListEvent.OnItemClick(Routes.ADD_ITEM + "/${item.id}"))
                 },
             colors = CardDefaults.cardColors(Color.White)
         ) {
