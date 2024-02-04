@@ -9,18 +9,37 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
 import ru.ar4uk.shoppinglistsimple.ui.theme.GrayLight
 
 @Composable
 fun ShoppingListScreen(
-    viewModel: ShoppingListViewModel = hiltViewModel()
+    viewModel: ShoppingListViewModel = hiltViewModel(),
+    onNavigate: (String) -> Unit
 ) {
     val itemsList = viewModel.list.collectAsState(initial = emptyList())
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when(uiEvent) {
+                is UiEvent.Navigate -> {
+                    onNavigate(uiEvent.route)
+                }
+                UiEvent.PopBackStack -> {
+
+                }
+                is UiEvent.ShowSnackBar -> {
+
+                }
+            }
+        }
+    }
 
     LazyColumn(modifier = Modifier
         .fillMaxSize()
@@ -28,7 +47,10 @@ fun ShoppingListScreen(
         contentPadding = PaddingValues(bottom = 100.dp)
     ) {
         items(itemsList.value) {item ->
-            UIShoppingListItem(item)
+            UIShoppingListItem(item) { event ->
+                viewModel.onEvent(event)
+            }
         }
     }
+    MainDialog(dialogController = viewModel)
 }

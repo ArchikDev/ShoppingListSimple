@@ -1,6 +1,7 @@
 package ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
+import ru.ar4uk.shoppinglistsimple.navigation.Routes
 import ru.ar4uk.shoppinglistsimple.ui.theme.DarkText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GreenLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
@@ -34,7 +36,8 @@ import ru.ar4uk.shoppinglistsimple.ui.theme.Red
 
 @Composable
 fun UIShoppingListItem(
-    item: ShoppingListItem
+    item: ShoppingListItem,
+    onEvent: (ShoppingListEvent) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier.padding(
@@ -52,6 +55,9 @@ fun UIShoppingListItem(
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
+                }
+                .clickable {
+                    onEvent(ShoppingListEvent.OnItemClick(Routes.ADD_ITEM))
                 },
             colors = CardDefaults.cardColors(Color.White)
         ) {
@@ -84,7 +90,9 @@ fun UIShoppingListItem(
             }
         }
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                onEvent(ShoppingListEvent.OnShowDeleteDialog(item))
+            },
             modifier = Modifier
                 .constrainAs(deleteButton) {
                     top.linkTo(card.top)
@@ -105,7 +113,9 @@ fun UIShoppingListItem(
             )
         }
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                onEvent(ShoppingListEvent.OnShowEditDialog(item))
+            },
             modifier = Modifier
                 .constrainAs(editButton) {
                     top.linkTo(card.top)

@@ -10,11 +10,16 @@ import ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen.SettingsScr
 import ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen.ShoppingListScreen
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(
+    navController: NavHostController,
+    onNavigate: (String) -> Unit
+) {
 
     NavHost(navController = navController, startDestination = Routes.SHOPPING_LIST) {
         composable(Routes.SHOPPING_LIST) {
-            ShoppingListScreen()
+            ShoppingListScreen() { route ->
+                onNavigate(route)
+            }
         }
         composable(Routes.NOTE_LIST) {
             NoteListScreen()

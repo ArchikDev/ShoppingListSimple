@@ -7,4 +7,5 @@ object Routes {
     const val SETTINGS = "settings"
     const val NOTE_NEW = "note_new"
     const val ADD_ITEM = "add_item"
+    const val MAIN_SCREEN = "main_screen"
 }

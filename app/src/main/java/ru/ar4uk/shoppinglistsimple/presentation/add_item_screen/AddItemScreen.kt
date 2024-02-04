@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun AddItemScreen() {
     Text(
-        text = "AboutScreen",
+        text = "AddScreen",
         modifier = Modifier
             .fillMaxSize()
             .wrapContentHeight()
