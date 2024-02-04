@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.ar4uk.shoppinglistsimple.R
+import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemEvent
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemViewModel
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.UiAddItem
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
@@ -60,8 +61,10 @@ fun AddItemScreen(
                 ) {
                     TextField(
                         modifier = Modifier.weight(1f),
-                        value = "",
-                        onValueChange = {},
+                        value = viewModel.itemText.value,
+                        onValueChange = {
+                            viewModel.onEvent(AddItemEvent.OnTextChange(it))
+                        },
                         label = {
                             Text(
                                 text = "New item",
@@ -79,7 +82,9 @@ fun AddItemScreen(
                         ),
                         singleLine = true
                     )
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        viewModel.onEvent(AddItemEvent.OnItemSave)
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.fl_add_icon),
                             contentDescription = "Add"
@@ -89,12 +94,15 @@ fun AddItemScreen(
             }
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 10.dp)
+                .padding(
+                    start = 5.dp,
+                    end = 5.dp
+                )
             ) {
                 if (itemsList != null) {
                     items(itemsList.value) {item ->
-                        UiAddItem(item = item, onEvent = {
-
+                        UiAddItem(item = item, onEvent = { event ->
+                            viewModel.onEvent(event)
                         })
 
                     }
