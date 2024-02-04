@@ -29,11 +29,13 @@ class MainScreenViewModel @Inject constructor(
         when(event) {
             DialogEvent.OnCancel -> {
                 openDialog.value = false
+                editableText.value = ""
             }
             DialogEvent.OnConfirm -> {
                 onEvent(MainScreenEvent.OnItemSave)
 
                 openDialog.value = false
+                editableText.value = ""
             }
             is DialogEvent.OnTextChange -> {
                 editableText.value = event.text

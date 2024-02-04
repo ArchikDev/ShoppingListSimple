@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Colors
 import androidx.compose.material.Icon
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -24,13 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ru.ar4uk.shoppinglistsimple.R
+import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.ui.theme.DarkText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GreenLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
 import ru.ar4uk.shoppinglistsimple.ui.theme.Red
 
 @Composable
-fun UIShoppingListItem() {
+fun UIShoppingListItem(
+    item: ShoppingListItem
+) {
     ConstraintLayout(
         modifier = Modifier.padding(
             start = 3.dp,
@@ -47,7 +52,8 @@ fun UIShoppingListItem() {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
+                },
+            colors = CardDefaults.cardColors(Color.White)
         ) {
             Column(
                 modifier = Modifier
@@ -55,7 +61,7 @@ fun UIShoppingListItem() {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "List 1",
+                    text = item.name,
                     style = TextStyle(
                         color = DarkText,
                         fontWeight = FontWeight.Bold,
@@ -63,7 +69,7 @@ fun UIShoppingListItem() {
                     )
                 )
                 Text(
-                    text = "12/12/2023 13:00",
+                    text = item.time,
                     style = TextStyle(
                         color = LightText,
                         fontSize = 12.sp
@@ -72,7 +78,8 @@ fun UIShoppingListItem() {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 5.dp)
+                        .padding(top = 5.dp),
+                    progress = 0.5f
                 )
             }
         }
@@ -130,7 +137,7 @@ fun UIShoppingListItem() {
                 .padding(end = 5.dp)
         ) {
             Text(
-                text = "15/5", modifier = Modifier
+                text = "${item.allItemsCount}/${item.allSelectedItemsCount}", modifier = Modifier
                     .background(Red)
                     .padding(
                         top = 3.dp,
