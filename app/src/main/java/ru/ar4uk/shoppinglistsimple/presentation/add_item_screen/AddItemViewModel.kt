@@ -5,12 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingItem
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingItemRepo
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
 import javax.inject.Inject
@@ -25,6 +28,10 @@ class AddItemViewModel @Inject constructor(
     var addItem: ShoppingItem? = null
     var listId: Int = -1
     var shoppingListItem: ShoppingListItem? = null
+
+    private val _uiEvent = Channel<UiEvent>() // передатчик
+    val uiEvent = _uiEvent.receiveAsFlow() // приёмник
+
 
     init {
         listId = savedStateHandle.get<String>("listId")?.toInt()!!
@@ -85,6 +92,20 @@ class AddItemViewModel @Inject constructor(
                 viewModelScope.launch {
                     if (listId == -1) return@launch
 
+                    if (addItem !== null) {
+                        if (addItem!!.name.isEmpty()) {
+                            sendUiEvent(UiEvent.ShowSnackBar("Name not empty"))
+
+                            return@launch
+                        }
+                    } else {
+                        if (itemText.value.isEmpty()) {
+                            sendUiEvent(UiEvent.ShowSnackBar("Name not empty"))
+
+                            return@launch
+                        }
+                    }
+
                     repository.insertItem(
                         ShoppingItem(
                             id = addItem?.id,
@@ -128,6 +149,12 @@ class AddItemViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 

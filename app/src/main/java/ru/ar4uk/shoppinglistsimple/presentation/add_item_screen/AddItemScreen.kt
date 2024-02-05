@@ -19,6 +19,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +34,11 @@ import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemEvent
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemViewModel
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.UiAddItem
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.DarkText
+import ru.ar4uk.shoppinglistsimple.ui.theme.EmptyText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GrayLight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -45,6 +48,20 @@ fun AddItemScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val itemsList = viewModel.itemsList?.collectAsState(initial = emptyList())
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when(uiEvent) {
+                is UiEvent.ShowSnackBar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        uiEvent.message
+                    )
+                }
+
+                else -> {}
+            }
+        }
+    }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(
@@ -117,6 +134,7 @@ fun AddItemScreen(
                 text = "Empty",
                 fontSize = 25.sp,
                 textAlign = TextAlign.Center,
+                color = EmptyText,
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight()

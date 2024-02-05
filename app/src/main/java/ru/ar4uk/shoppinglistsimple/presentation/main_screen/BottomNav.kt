@@ -14,7 +14,10 @@ import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.GrayLight
 
 @Composable
-fun BottomNav(navController: NavHostController) {
+fun BottomNav(
+    currentRoute: String?,
+    onNavigate: (String) -> Unit
+) {
     val listNav = listOf(
         BottomNavItem.ListItem,
         BottomNavItem.NoteItem,
@@ -24,13 +27,11 @@ fun BottomNav(navController: NavHostController) {
 
     BottomNavigation(backgroundColor = Color.White) {
         listNav.forEach { bottomItem ->
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRow = navBackStackEntry?.destination?.route
 
             BottomNavigationItem(
-                selected = currentRow == bottomItem.route,
+                selected = currentRoute == bottomItem.route,
                 onClick = {
-                    navController.navigate(bottomItem.route)
+                    onNavigate(bottomItem.route)
                 },
                 icon = {
                     Icon(painter = painterResource(id = bottomItem.iconId), contentDescription = "icon")

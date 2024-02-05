@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
+import ru.ar4uk.shoppinglistsimple.ui.theme.EmptyText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GrayLight
 
 @Composable
@@ -33,12 +34,8 @@ fun ShoppingListScreen(
                 is UiEvent.Navigate -> {
                     onNavigate(uiEvent.route)
                 }
-                UiEvent.PopBackStack -> {
 
-                }
-                is UiEvent.ShowSnackBar -> {
-
-                }
+                else -> {}
             }
         }
     }
@@ -59,6 +56,7 @@ fun ShoppingListScreen(
         androidx.compose.material.Text(
             text = "Empty",
             fontSize = 25.sp,
+            color = EmptyText,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxSize()
