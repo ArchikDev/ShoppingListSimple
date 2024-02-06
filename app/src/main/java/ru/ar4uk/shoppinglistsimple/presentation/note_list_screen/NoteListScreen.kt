@@ -9,11 +9,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun NoteListScreen() {
-    Text(
-        text = "NoteListScreen",
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight()
-            .wrapContentWidth()
-    )
+
 }
