@@ -32,7 +32,6 @@ class AddItemViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>() // передатчик
     val uiEvent = _uiEvent.receiveAsFlow() // приёмник
 
-
     init {
         listId = savedStateHandle.get<String>("listId")?.toInt()!!
 
