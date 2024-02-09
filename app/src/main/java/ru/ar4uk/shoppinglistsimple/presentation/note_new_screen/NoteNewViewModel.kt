@@ -12,14 +12,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingNoteItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingNoteItemRepo
+import ru.ar4uk.shoppinglistsimple.datastore.DataStoreManager
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.getCurrentTime
+import ru.ar4uk.shoppinglistsimple.presentation.settings_screen.ColorUtils
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteNewViewModel @Inject constructor(
     private val repository: ShoppingNoteItemRepo,
+    private val dataStoreManager: DataStoreManager,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -35,6 +38,8 @@ class NoteNewViewModel @Inject constructor(
     var description by mutableStateOf("")
         private set
 
+    var titleColor = mutableStateOf(ColorUtils.colorList[0])
+
     init {
         noteId = savedStateHandle.get<String>("noteId")?.toInt() ?: -1
 
@@ -46,6 +51,15 @@ class NoteNewViewModel @Inject constructor(
 
                     this@NoteNewViewModel.noteItem = noteItem
                 }
+            }
+        }
+
+        viewModelScope.launch {
+            dataStoreManager.getStringPreference(
+                DataStoreManager.TITLE_COLOR,
+                ColorUtils.colorList[0]
+            ).collect { color ->
+                titleColor.value = color
             }
         }
     }

@@ -9,19 +9,23 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingNoteItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingNoteItemRepo
+import ru.ar4uk.shoppinglistsimple.datastore.DataStoreManager
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
+import ru.ar4uk.shoppinglistsimple.presentation.settings_screen.ColorUtils
 import ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen.ShoppingListEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
-    private val repository: ShoppingNoteItemRepo
+    private val repository: ShoppingNoteItemRepo,
+    private val dataStoreManager: DataStoreManager
 ): ViewModel(), DialogController {
 
     val noteList = repository.allNotes()
     private var noteItem: ShoppingNoteItem? = null
+    var titleColor = mutableStateOf(ColorUtils.colorList[0])
 
     private val _uiEvent = Channel<UiEvent>() // передатчик
     val uiEvent = _uiEvent.receiveAsFlow() // приёмник
@@ -34,6 +38,17 @@ class NoteListViewModel @Inject constructor(
         private set
     override var showEditableText = mutableStateOf(false)
         private set
+
+    init {
+        viewModelScope.launch {
+            dataStoreManager.getStringPreference(
+                DataStoreManager.TITLE_COLOR,
+                ColorUtils.colorList[0]
+            ).collect { color ->
+                titleColor.value = color
+            }
+        }
+    }
 
     fun onEvent(event: NoteListEvent) {
         when(event) {

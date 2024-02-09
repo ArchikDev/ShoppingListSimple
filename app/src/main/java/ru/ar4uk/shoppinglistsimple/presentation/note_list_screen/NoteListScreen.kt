@@ -80,9 +80,7 @@ fun NoteListScreen(
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
             items(itemsList.value) {item ->
-                UiNoteItem(item) { event ->
-                    viewModel.onEvent(event)
-                }
+                UiNoteItem(viewModel.titleColor.value, item, viewModel::onEvent)
             }
         }
         MainDialog(dialogController = viewModel)
