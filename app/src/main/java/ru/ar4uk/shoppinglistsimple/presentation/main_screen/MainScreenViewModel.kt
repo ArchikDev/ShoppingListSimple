@@ -74,7 +74,7 @@ class MainScreenViewModel @Inject constructor(
                 if (event.route == Routes.SHOPPING_LIST) {
                     openDialog.value = true
                 } else {
-                    sendUiEvent(UiEvent.NavigateMain(Routes.NOTE_NEW))
+                    sendUiEvent(UiEvent.NavigateMain(Routes.NOTE_NEW + "/-1"))
                 }
 
             }

@@ -22,7 +22,7 @@ fun MainNavigationGraph() {
         composable(Routes.ADD_ITEM + "/{listId}") {
             AddItemScreen()
         }
-        composable(Routes.NOTE_NEW) {
+        composable(Routes.NOTE_NEW + "/{noteId}") {
             NoteNewScreen() {
                 navController.popBackStack()
             }

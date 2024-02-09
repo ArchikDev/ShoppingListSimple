@@ -17,18 +17,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.ar4uk.shoppinglistsimple.data.model.ShoppingNoteItem
+import ru.ar4uk.shoppinglistsimple.navigation.Routes
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
 import ru.ar4uk.shoppinglistsimple.ui.theme.Red
 
 @Composable
-fun UiNoteItem() {
+fun UiNoteItem(
+    item: ShoppingNoteItem,
+    onEvent: (NoteListEvent) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 3.dp, top = 3.dp, end = 3.dp)
             .clickable {
-
+                onEvent(NoteListEvent.OnItemClick(
+                    Routes.NOTE_NEW + "/${item.id}"
+                ))
             }
     ) {
         Column(
@@ -39,13 +46,13 @@ fun UiNoteItem() {
                     modifier = Modifier
                         .padding(top = 10.dp, start = 10.dp)
                         .weight(1f),
-                    text = "Note 1",
+                    text = item.title,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     modifier = Modifier.padding(top = 10.dp, end = 10.dp),
-                    text = "12/12/2023 13:00",
+                    text = item.time,
                     color = BlueLight,
                     fontSize = 12.sp
                 )
@@ -55,12 +62,14 @@ fun UiNoteItem() {
                     modifier = Modifier
                         .padding(top = 10.dp, start = 10.dp, bottom = 10.dp)
                         .weight(1f),
-                    text = "dsfsdfsfsdfsdfsdfs",
+                    text = item.description,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     color = LightText
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    onEvent(NoteListEvent.OnShowDeleteDialog(item))
+                }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete",
