@@ -40,7 +40,9 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                 .padding(top = 10.dp)
         ) {
             items(list) {
-                UiColorItem(item = it)
+                UiColorItem(item = it) { event ->
+                    viewModel.onEvent(event)
+                }
             }
         }
     }

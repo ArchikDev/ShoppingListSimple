@@ -13,6 +13,7 @@ import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingListItemRepo
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingListItemRepoImpl
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingNoteItemRepo
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingNoteItemRepoImpl
+import ru.ar4uk.shoppinglistsimple.datastore.DataStoreManager
 import javax.inject.Singleton
 
 @Module
@@ -45,6 +46,12 @@ object AppModule {
     @Singleton
     fun provideShoppingRepoNote(db: MainDb): ShoppingNoteItemRepo {
         return ShoppingNoteItemRepoImpl(db.shoppingNoteItemDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStoreManager(app: Application): DataStoreManager {
+        return DataStoreManager(app)
     }
 
 }
