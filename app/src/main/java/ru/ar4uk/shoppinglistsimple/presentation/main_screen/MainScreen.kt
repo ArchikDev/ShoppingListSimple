@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.navigation.NavigationGraph
+import ru.ar4uk.shoppinglistsimple.navigation.Routes
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.MainDialog
 import ru.ar4uk.shoppinglistsimple.ui.theme.BlueLight
@@ -59,7 +60,7 @@ fun MainScreen(
                 shape = CircleShape,
                 backgroundColor = BlueLight,
                 onClick = {
-                    viewModel.onEvent(MainScreenEvent.OnShowDialog)
+                    viewModel.onEvent(MainScreenEvent.OnNewItemClick(currentRoute ?: Routes.SHOPPING_LIST))
                 }
             ) {
                 Icon(

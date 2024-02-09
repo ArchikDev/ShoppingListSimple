@@ -70,8 +70,13 @@ class MainScreenViewModel @Inject constructor(
                     )
                 }
             }
-            is MainScreenEvent.OnShowDialog -> {
-                openDialog.value = true
+            is MainScreenEvent.OnNewItemClick -> {
+                if (event.route == Routes.SHOPPING_LIST) {
+                    openDialog.value = true
+                } else {
+                    sendUiEvent(UiEvent.NavigateMain(Routes.NOTE_NEW))
+                }
+
             }
 
             is MainScreenEvent.Navigate -> {
