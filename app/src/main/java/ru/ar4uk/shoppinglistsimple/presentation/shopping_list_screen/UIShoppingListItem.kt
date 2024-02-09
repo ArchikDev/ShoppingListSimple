@@ -29,6 +29,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.navigation.Routes
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.ProgressHelper
 import ru.ar4uk.shoppinglistsimple.ui.theme.DarkText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GreenLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
@@ -85,7 +86,7 @@ fun UIShoppingListItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 5.dp),
-                    progress = 0.5f
+                    progress = ProgressHelper.getProgress(item.allItemsCount, item.allSelectedItemsCount)
                 )
             }
         }

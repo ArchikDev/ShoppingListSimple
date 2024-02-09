@@ -14,6 +14,7 @@ import ru.ar4uk.shoppinglistsimple.data.model.ShoppingNoteItem
 import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingNoteItemRepo
 import ru.ar4uk.shoppinglistsimple.presentation.add_item_screen.AddItemEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.getCurrentTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,7 +70,7 @@ class NoteNewViewModel @Inject constructor(
                             noteItem?.id,
                             title,
                             description,
-                            "12/12/2023 13:00"
+                            noteItem?.time ?: getCurrentTime()
                         )
                     )
                     sendUiEvent(UiEvent.PopBackStack)

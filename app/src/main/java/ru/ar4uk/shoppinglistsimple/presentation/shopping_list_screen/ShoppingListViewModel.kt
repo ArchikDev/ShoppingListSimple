@@ -12,6 +12,7 @@ import ru.ar4uk.shoppinglistsimple.data.repository.ShoppingListItemRepo
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.getCurrentTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +46,7 @@ class ShoppingListViewModel @Inject constructor(
                         ShoppingListItem(
                             id = listItem?.id,
                             name = editableText.value,
-                            time = "12-12-2023 13:00",
+                            time = listItem?.time ?: getCurrentTime(),
                             allItemsCount = listItem?.allItemsCount ?: 0,
                             allSelectedItemsCount = listItem?.allSelectedItemsCount ?: 0
                         )

@@ -13,6 +13,7 @@ import ru.ar4uk.shoppinglistsimple.navigation.Routes
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.UiEvent
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogController
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.dialog.DialogEvent
+import ru.ar4uk.shoppinglistsimple.presentation.helpers.getCurrentTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +64,7 @@ class MainScreenViewModel @Inject constructor(
                         ShoppingListItem(
                             id = null,
                             name = editableText.value,
-                            time = "12-12-2023 13:00",
+                            time = getCurrentTime(),
                             allItemsCount = 0,
                             allSelectedItemsCount = 0
                         )
