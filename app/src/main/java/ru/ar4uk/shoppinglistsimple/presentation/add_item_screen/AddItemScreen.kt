@@ -14,6 +14,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -63,7 +65,14 @@ fun AddItemScreen(
         }
     }
 
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(scaffoldState = scaffoldState, snackbarHost = {
+        SnackbarHost(hostState = scaffoldState.snackbarHostState) { data ->
+            Snackbar(
+                snackbarData = data,
+                backgroundColor = BlueLight
+            )
+        }
+    }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
