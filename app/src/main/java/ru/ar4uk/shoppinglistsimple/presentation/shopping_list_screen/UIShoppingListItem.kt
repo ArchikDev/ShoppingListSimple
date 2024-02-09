@@ -30,6 +30,7 @@ import ru.ar4uk.shoppinglistsimple.R
 import ru.ar4uk.shoppinglistsimple.data.model.ShoppingListItem
 import ru.ar4uk.shoppinglistsimple.navigation.Routes
 import ru.ar4uk.shoppinglistsimple.presentation.helpers.ProgressHelper
+import ru.ar4uk.shoppinglistsimple.presentation.settings_screen.ColorUtils
 import ru.ar4uk.shoppinglistsimple.ui.theme.DarkText
 import ru.ar4uk.shoppinglistsimple.ui.theme.GreenLight
 import ru.ar4uk.shoppinglistsimple.ui.theme.LightText
@@ -40,6 +41,8 @@ fun UIShoppingListItem(
     item: ShoppingListItem,
     onEvent: (ShoppingListEvent) -> Unit
 ) {
+    val progress = ProgressHelper.getProgress(item.allItemsCount, item.allSelectedItemsCount)
+
     ConstraintLayout(
         modifier = Modifier.padding(
             start = 3.dp,
@@ -86,7 +89,8 @@ fun UIShoppingListItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 5.dp),
-                    progress = ProgressHelper.getProgress(item.allItemsCount, item.allSelectedItemsCount)
+                    progress = progress,
+                    color = ColorUtils.getProgressColor(progress)
                 )
             }
         }
