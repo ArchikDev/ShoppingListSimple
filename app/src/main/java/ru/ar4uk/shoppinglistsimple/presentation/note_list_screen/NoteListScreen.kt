@@ -2,21 +2,29 @@ package ru.ar4uk.shoppinglistsimple.presentation.shopping_list_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +47,8 @@ fun NoteListScreen(
     onNavigate: (String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    val itemsList = viewModel.noteList.collectAsState(initial = emptyList())
+//    val itemsList = viewModel.noteList.collectAsState(initial = emptyList())
+
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { uiEvent ->
@@ -74,27 +83,53 @@ fun NoteListScreen(
             )
         }
     }) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .background(GrayLight),
-            contentPadding = PaddingValues(bottom = 100.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(GrayLight)
         ) {
-            items(itemsList.value) {item ->
-                UiNoteItem(viewModel.titleColor.value, item, viewModel::onEvent)
-            }
-        }
-        MainDialog(dialogController = viewModel)
-        if (itemsList.value.isEmpty()) {
-            androidx.compose.material.Text(
-                text = "Empty",
-                fontSize = 25.sp,
-                color = EmptyText,
-                textAlign = TextAlign.Center,
+            Card(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentHeight()
-            )
-        }
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                shape = RoundedCornerShape(15.dp)
+            ) {
+                TextField(
+                    value = viewModel.searchText,
+                    onValueChange = { text ->
+                        viewModel.onEvent(NoteListEvent.OnTextSearchChange(text))
+                    },
+                    label = {
+                        Text(
+                            text = "Search"
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White
+                    )
+                )
+            }
+            LazyColumn(modifier = Modifier
+                .fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 100.dp)
+            ) {
+                items(viewModel.noteList) {item ->
+                    UiNoteItem(viewModel.titleColor.value, item, viewModel::onEvent)
+                }
+            }
+            MainDialog(dialogController = viewModel)
+            if (viewModel.noteList.isEmpty()) {
+                androidx.compose.material.Text(
+                    text = "Empty",
+                    fontSize = 25.sp,
+                    color = EmptyText,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentHeight()
+                )
+            }
+         }
     }
 
 

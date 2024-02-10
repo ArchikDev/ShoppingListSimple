@@ -6,6 +6,6 @@ sealed class NoteListEvent {
 
     data class OnShowDeleteDialog(val item: ShoppingNoteItem): NoteListEvent()
     data class OnItemClick(val route: String): NoteListEvent()
-
+    data class OnTextSearchChange(val text: String): NoteListEvent()
     data object UnDoneDeleteItem: NoteListEvent()
 }

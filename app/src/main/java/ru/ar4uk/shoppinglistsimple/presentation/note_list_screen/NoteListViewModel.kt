@@ -1,6 +1,8 @@
 package ru.ar4uk.shoppinglistsimple.presentation.note_list_screen
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +25,17 @@ class NoteListViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ): ViewModel(), DialogController {
 
-    val noteList = repository.allNotes()
+    val noteListFlow = repository.allNotes()
     private var noteItem: ShoppingNoteItem? = null
     var titleColor = mutableStateOf(ColorUtils.colorList[0])
 
+    var noteList by mutableStateOf(listOf<ShoppingNoteItem>())
+    var originalNoteList = listOf<ShoppingNoteItem>()
+
     private val _uiEvent = Channel<UiEvent>() // передатчик
     val uiEvent = _uiEvent.receiveAsFlow() // приёмник
+    var searchText by mutableStateOf("")
+        private set
 
     override var dialogTitle = mutableStateOf("Delete?")
         private set
@@ -48,6 +55,13 @@ class NoteListViewModel @Inject constructor(
                 titleColor.value = color
             }
         }
+
+        viewModelScope.launch {
+            noteListFlow.collect { list ->
+                noteList = list
+                originalNoteList = list
+            }
+        }
     }
 
     fun onEvent(event: NoteListEvent) {
@@ -62,6 +76,13 @@ class NoteListViewModel @Inject constructor(
             is NoteListEvent.UnDoneDeleteItem -> {
                 viewModelScope.launch {
                     noteItem?.let { repository.insertItem(it) }
+                }
+            }
+
+            is NoteListEvent.OnTextSearchChange -> {
+                searchText = event.text
+                noteList = originalNoteList.filter { note ->
+                    note.title.lowercase().startsWith(searchText.lowercase())
                 }
             }
         }
