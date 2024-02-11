@@ -1,5 +1,6 @@
 package ru.ar4uk.shoppinglistsimple.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,5 +11,7 @@ data class ShoppingListItem(
     val name: String,
     val time: String,
     val allItemsCount: Int,
-    val allSelectedItemsCount: Int
+    val allSelectedItemsCount: Int,
+    @ColumnInfo(defaultValue = "0")
+    val testCounter: Int = 0
 )
