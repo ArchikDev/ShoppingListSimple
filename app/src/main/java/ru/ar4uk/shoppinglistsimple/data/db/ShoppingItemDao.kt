@@ -22,7 +22,7 @@ interface ShoppingItemDao {
     @Query("SELECT * FROM shop_item WHERE shoppingListItemID = :shoppingListItemID")
     fun allItemsById(shoppingListItemID: Int): Flow<List<ShoppingItem>>
 
-    @Query("SELECT * FROM shop_list WHERE id = :shoppingListItemID")
+    @Query("SELECT * FROM shop_list_item WHERE id = :shoppingListItemID")
     suspend fun listItem(shoppingListItemID: Int): ShoppingListItem
 
     @Update
